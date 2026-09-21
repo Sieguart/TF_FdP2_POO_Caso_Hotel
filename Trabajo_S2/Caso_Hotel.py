@@ -40,3 +40,20 @@ class EmpleadoPorHoras(Empleado):
 
     def calcular_sueldo_neto(self) -> float:
         return self.horas_trabajadas * self.tarifa_hora
+
+
+#3
+class GestionRRHH:
+    def __init__(self):
+        self._empleados = []  # Uso de Lista (Colección secuencial mutable)
+
+    def agregar_empleado((self, emp: Empleado):
+        self._empleados.append(emp)
+
+    def listar_planilla_pago(self):
+        print("\n--- PLANILLA DE SUELDOS ---")
+        for emp in self._empleados:
+            print(f"DNI: {emp.dni} | Nombre: {emp._nombre} | "
+                  f"AFP: S/{emp.calcular_afp():.2f} | "
+                  f"EsSalud: S/{emp.calcular_essalud():.2f} | "
+                  f"Neto: S/{emp.calcular_sueldo_neto():.2f}")
