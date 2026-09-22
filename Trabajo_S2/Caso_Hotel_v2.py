@@ -1,3 +1,4 @@
+#Inicio
 from abc import ABC, abstractmethod
 
 # ==========================================
@@ -127,3 +128,109 @@ class GestionRRHH:
                   f"S/{emp.calcular_sueldo_neto():<8.2f}")
         print("="*85)
 
+
+# ==========================================
+# 5. MENÚ DE EJECUCIÓN
+# ==========================================
+def solicitar_dni_valido() -> str:
+    dni = input("DNI (8 dígitos): ").strip()
+    if not dni.isdigit() or len(dni) != 8:
+        raise ValueError("El DNI debe contener exactamente 8 dígitos numéricos.")
+    return dni
+
+def ejecutar_menu():
+    sistema = GestionRRHH()
+    
+    while True:
+        print("\n=== SISTEMA DE GESTIÓN DE RRHH - HOTEL ===")
+        print("1. Registrar Empleado en Planilla")
+        print("2. Registrar Empleado Por Horas")
+        print("3. Listar Planilla de Pagos y Descuentos de Ley")
+        print("4. Buscar Empleado por DNI")
+        print("5. Registrar Capacitación a Empleado")
+        print("6. Registrar Vacaciones a Empleado")
+        print("7. Salir")
+        
+        try:
+            opcion = int(input("\nSeleccione una opción: "))
+            
+            if opcion == 1:
+                dni = solicitar_dni_valido()
+                nombre = input("Nombre completo: ").strip()
+                if not nombre:
+                    raise ValueError("El nombre no puede estar vacío.")
+                sueldo = float(input("Sueldo Base (S/): "))
+                if sueldo <= 0:
+                    raise ValueError("El sueldo debe ser mayor a 0.")
+                
+                emp = EmpleadoPlanilla(dni, nombre, sueldo)
+                sistema.agregar_empleado(emp)
+                print(">> ¡Empleado de planilla registrado con éxito!")
+
+            elif opcion == 2:
+                dni = solicitar_dni_valido()
+                nombre = input("Nombre completo: ").strip()
+                if not nombre:
+                    raise ValueError("El nombre no puede estar vacío.")
+                horas = int(input("Horas trabajadas: "))
+                tarifa = float(input("Tarifa por hora (S/): "))
+                if horas <= 0 or tarifa <= 0:
+                    raise ValueError("Las horas y la tarifa deben ser mayores a 0.")
+                
+                emp = EmpleadoPorHoras(dni, nombre, horas, tarifa)
+                sistema.agregar_empleado(emp)
+                print(">> ¡Empleado por horas registrado con éxito!")
+
+            elif opcion == 3:
+                sistema.listar_planilla_pago()
+
+            elif opcion == 4:
+                dni = solicitar_dni_valido()
+                emp = sistema.buscar_empleado(dni)
+                if emp:
+                    print(f"\n--- INFORMACIÓN DEL EMPLEADO ---")
+                    print(f"DNI: {emp.dni}\nNombre: {emp.nombre}\nSueldo Base: S/{emp.sueldo_base:.2f}")
+                    print(f"Capacitaciones: {len(emp._capacitaciones)}")
+                    for c in emp._capacitaciones:
+                        print(f"  - {c}")
+                    print(f"Historial Vacaciones: {len(emp._vacaciones)}")
+                    for v in emp._vacaciones:
+                        print(f"  - {v}")
+                else:
+                    print(">> Empleado no encontrado.")
+
+            elif opcion == 5:
+                dni = solicitar_dni_valido()
+                emp = sistema.buscar_empleado(dni)
+                if emp:
+                    curso = input("Nombre del curso de capacitación: ")
+                    horas = int(input("Duración en horas: "))
+                    emp.agregar_capacitacion(curso, horas)
+                    print(">> Capacitación registrada correctamente.")
+                else:
+                    print(">> Empleado no encontrado.")
+
+            elif opcion == 6:
+                dni = solicitar_dni_valido()
+                emp = sistema.buscar_empleado(dni)
+                if emp:
+                    dias = int(input("Cantidad de días de vacaciones: "))
+                    emp.registrar_vacaciones(dias)
+                    print(">> Solicitud de vacaciones registrada.")
+                else:
+                    print(">> Empleado no encontrado.")
+
+            elif opcion == 7:
+                print("\nGracias por usar el sistema de RRHH. ¡Hasta luego!")
+                break
+            else:
+                print(">> Opción no válida. Ingrese un número entre 1 y 7.")
+
+        except ValueError as e:
+            print(f"\n[ERROR DE VALIDACIÓN]: {e}")
+        except Exception as e:
+            print(f"\n[ERRORINESPERADO]: Ocurrió un fallo: {e}")
+
+if __name__ == "__main__":
+    ejecutar_menu()
+#Fin
