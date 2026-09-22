@@ -116,46 +116,77 @@ class Administrativo(Empleado):
         return (self._sueldo_base + self._bono_gestion) - self.calcular_afp()
 
 
+# ------------------------------------------
+# 3. GESTOR CENTRAL DEL SISTEMA
+# ------------------------------------------
 
+class SistemaWOWPeru:
+    def __init__(self):
+        self._empleados: List[Empleado] = []
+        self._clientes: List[Cliente] = []
+        self._incidencias: List[Incidencia] = []
 
+    def registrar_empleado(self, emp: Empleado):
+        if self.buscar_empleado(emp.dni):
+            raise ValueError(f"Ya existe un empleado con el DNI {emp.dni}.")
+        self._empleados.append(emp)
 
+    def buscar_empleado(self, dni: str) -> Optional[Empleado]:
+        for emp in self._empleados:
+            if emp.dni == dni:
+                return emp
+        return None
 
+    def registrar_cliente(self, cli: Cliente):
+        if self.buscar_cliente(cli.dni):
+            raise ValueError(f"Ya existe un cliente registrado con el DNI {cli.dni}.")
+        self._clientes.append(cli)
 
+    def buscar_cliente(self, dni: str) -> Optional[Cliente]:
+        for cli in self._clientes:
+            if cli.dni == dni:
+                return cli
+        return None
 
+    def registrar_incidencia(self, ticket: str, dni_cliente: str, descripcion: str):
+        cliente = self.buscar_cliente(dni_cliente)
+        if not cliente:
+            raise ValueError("El DNI del cliente no se encuentra en la base de datos.")
+        incidencia = Incidencia(ticket, cliente, descripcion)
+        self._incidencias.append(incidencia)
 
+    def asignar_tecnico_a_incidencia(self, ticket: str, dni_tecnico: str):
+        incidencia = next((i for i in self._incidencias if i.codigo == ticket), None)
+        if not incidencia:
+            raise ValueError("Ticket de incidencia no encontrado.")
+        
+        emp = self.buscar_empleado(dni_tecnico)
+        if not isinstance(emp, Tecnico):
+            raise ValueError("El DNI ingresado no corresponde a un Técnico operativo.")
 
+        incidencia.asignar_tecnico(emp)
+        emp.incrementar_incidencias()
 
+    def listar_planilla_sueldos(self):
+        if not self._empleados:
+            print("\nNo existen empleados registrados.")
+            return
 
+        print("\n" + "="*85)
+        print(f"{'DNI':<10} | {'Nombre':<20} | {'AFP (10%)':<10} | {'EsSalud (8%)':<12} | {'Sueldo Neto':<10}")
+        print("="*85)
+        for emp in self._empleados:
+            print(f"{emp.dni:<10} | {emp.nombre:<20} | S/{emp.calcular_afp():<8.2f} | "
+                  f"S/{emp.calcular_essalud():<10.2f} | S/{emp.calcular_sueldo_neto():<8.2f}")
+        print("="*85)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def listar_incidencias(self):
+        if not self._incidencias:
+            print("\nNo hay incidencias registradas.")
+            return
+        print("\n--- LISTADO DE INCIDENCIAS OPERATIVAS ---")
+        for inc in self._incidencias:
+            print(inc)
 
 
 
