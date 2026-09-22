@@ -1,6 +1,7 @@
 #Inicio
 from abc import ABC, abstractmethod
-#1
+
+# 1
 class Empleado(ABC):
     def __init__(self, dni: str, nombre: str, sueldo_base: float):
         self._dni = dni
@@ -15,14 +16,20 @@ class Empleado(ABC):
     def sueldo_base(self):
         return self._sueldo_base
 
-#Reglas
-def calcular_afp(self) -> float:
+    # Reglas
+    def calcular_afp(self) -> float:
         return self._sueldo_base * 0.10  # 10% AFP
 
-def calcular_essalud(self) -> float:
+    def calcular_essalud(self) -> float:
         return self._sueldo_base * 0.08  # 8% EsSalud
 
-#2
+    # Método abstracto
+    @abstractmethod
+    def calcular_sueldo_neto(self) -> float:
+        pass
+
+
+# 2
 class EmpleadoPlanilla(Empleado):
     def __init__(self, dni: str, nombre: str, sueldo_base: float, asignacion_familiar: float = 102.50):
         super().__init__(dni, nombre, sueldo_base)
@@ -43,10 +50,10 @@ class EmpleadoPorHoras(Empleado):
         return self.horas_trabajadas * self.tarifa_hora
 
 
-#3
+# 3
 class GestionRRHH:
     def __init__(self):
-        self._empleados = []
+        self._empleados = [] 
 
     def agregar_empleado(self, emp: Empleado):
         self._empleados.append(emp)
@@ -60,7 +67,7 @@ class GestionRRHH:
                   f"Neto: S/{emp.calcular_sueldo_neto():.2f}")
 
 
-#4
+# 4
 def ejecutar_menu():
     sistema = GestionRRHH()
     while True:
