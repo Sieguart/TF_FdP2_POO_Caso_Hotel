@@ -1,4 +1,5 @@
 #Inicio
+from abc import ABC, abstractmethod
 # -----------------------------------------
 # 1. CLASES DE DOMINIO Y DE NEGOCIO
 # -----------------------------------------
