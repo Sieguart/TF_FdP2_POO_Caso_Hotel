@@ -46,6 +46,134 @@ class Incidencia:
         tec_str = self._tecnico_asignado.nombre if self._tecnico_asignado else "Sin Asignar"
         return f"Ticket: {self._codigo} | Cliente: {self._cliente.nombre} | Estado: {self._estado} | Técnico: {tec_str}"
 
+
+# ------------------------------------------
+# 2. JERARQUÍA DE CLASES: EMPLEADOS
+# ------------------------------------------
+
+class Empleado(ABC):
+    def __init__(self, dni: str, nombre: str, sueldo_base: float):
+        self._dni = dni
+        self._nombre = nombre
+        self._sueldo_base = sueldo_base
+
+    @property
+    def dni(self) -> str:
+        return self._dni
+
+    @property
+    def nombre(self) -> str:
+        return self._nombre
+
+    @property
+    def sueldo_base(self) -> float:
+        return self._sueldo_base
+
+    # Reglas de negocio
+    def calcular_afp(self) -> float:
+        """Descuento del 10% obligatorio de AFP"""
+        return self._sueldo_base * 0.10
+
+    def calcular_essalud(self) -> float:
+        """Aporte del 8% a EsSalud por parte del empleador"""
+        return self._sueldo_base * 0.08
+
+    @abstractmethod
+    def calcular_sueldo_neto(self) -> float:
+        """Método polimórfico a ser implementado por las subclases"""
+        pass
+
+
+class Tecnico(Empleado):
+    def __init__(self, dni: str, nombre: str, sueldo_base: float, especialidad: str):
+        super().__init__(dni, nombre, sueldo_base)
+        self._especialidad = especialidad
+        self._incidencias_resueltas = 0
+
+    @property
+    def incidencias_resueltas(self) -> int:
+        return self._incidencias_resueltas
+
+    def incrementar_incidencias(self):
+        self._incidencias_resueltas += 1
+
+    def calcular_bono(self) -> float:
+        # Bono de S/ 50 por cada incidencia resuelta
+        return self._incidencias_resueltas * 50.0
+
+    def calcular_sueldo_neto(self) -> float:
+        # Sueldo Base + Bono - AFP
+        return (self._sueldo_base + self.calcular_bono()) - self.calcular_afp()
+
+
+class Administrativo(Empleado):
+    def __init__(self, dni: str, nombre: str, sueldo_base: float, bono_gestion: float = 200.0):
+        super().__init__(dni, nombre, sueldo_base)
+        self._bono_gestion = bono_gestion
+
+    def calcular_sueldo_neto(self) -> float:
+        # Sueldo Base + Bono de Gestión - AFP
+        return (self._sueldo_base + self._bono_gestion) - self.calcular_afp()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Para guardar en git
 git add .
 git status
