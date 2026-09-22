@@ -290,7 +290,7 @@ if __name__ == "__main__":
 # Fin
 
 # Para guardar en git
-git add .
-git status
-git commit -m "Mensaje"
-git pudh
+#  git add .
+#  git status
+#  git commit -m "Mensaje"
+#  git push
