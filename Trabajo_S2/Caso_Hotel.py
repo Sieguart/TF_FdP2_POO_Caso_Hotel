@@ -1,6 +1,7 @@
 #Inicio
+from abc import ABC, abstractmethod
 #1
-Class Empleado:
+class Empleado(ABC):
     def __init__(self, dni: str, nombre: str, sueldo_base: float):
         self._dni = dni
         self._nombre = nombre
@@ -45,9 +46,9 @@ class EmpleadoPorHoras(Empleado):
 #3
 class GestionRRHH:
     def __init__(self):
-        self._empleados = []  # Uso de Lista (Colección secuencial mutable)
+        self._empleados = []
 
-    def agregar_empleado((self, emp: Empleado):
+    def agregar_empleado(self, emp: Empleado):
         self._empleados.append(emp)
 
     def listar_planilla_pago(self):
@@ -57,3 +58,42 @@ class GestionRRHH:
                   f"AFP: S/{emp.calcular_afp():.2f} | "
                   f"EsSalud: S/{emp.calcular_essalud():.2f} | "
                   f"Neto: S/{emp.calcular_sueldo_neto():.2f}")
+
+
+#4
+def ejecutar_menu():
+    sistema = GestionRRHH()
+    while True:
+        print("\n=== SISTEMA DE GESTIÓN DE RRHH - HOTEL ===")
+        print("1. Registrar Empleado Planilla")
+        print("2. Registrar Empleado Por Horas")
+        print("3. Listar Planilla de Pagos")
+        print("4. Salir")
+        
+        try:
+            opcion = int(input("Seleccione una opción: "))
+            if opcion == 1:
+                dni = input("DNI: ")
+                nombre = input("Nombre: ")
+                sueldo = float(input("Sueldo Base: "))
+                sistema.agregar_empleado(EmpleadoPlanilla(dni, nombre, sueldo))
+                print("¡Empleado registrado con éxito!")
+            elif opcion == 2:
+                dni = input("DNI: ")
+                nombre = input("Nombre: ")
+                horas = int(input("Horas trabajadas: "))
+                tarifa = float(input("Tarifa por hora: "))
+                sistema.agregar_empleado(EmpleadoPorHoras(dni, nombre, horas, tarifa))
+                print("¡Empleado registrado con éxito!")
+            elif opcion == 3:
+                sistema.listar_planilla_pago()
+            elif opcion == 4:
+                print("Saliendo del programa...")
+                break
+            else:
+                print("Opción no válida. Intente nuevamente.")
+        except ValueError:
+            print("Error: Ingrese un valor numérico válido.")
+
+if __name__ == "__main__":
+    ejecutar_menu()
