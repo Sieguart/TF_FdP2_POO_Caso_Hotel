@@ -93,3 +93,37 @@ class EmpleadoPorHoras(Empleado):
     def calcular_sueldo_neto(self) -> float:
         descuentos = self.calcular_afp()
         return (self.horas_trabajadas * self.tarifa_hora) - descuentos
+
+
+# ==========================================
+# 4. SISTEMA DE GESTIÓN
+# ==========================================
+class GestionRRHH:
+    def __init__(self):
+        self._empleados = []
+
+    def agregar_empleado(self, emp: Empleado):
+        if self.buscar_empleado(emp.dni):
+            raise ValueError(f"Ya existe un empleado registrado con el DNI {emp.dni}.")
+        self._empleados.append(emp)
+
+    def buscar_empleado(self, dni: str) -> Empleado:
+        for emp in self._empleados:
+            if emp.dni == dni:
+                return emp
+        return None
+
+    def listar_planilla_pago(self):
+        if not self._empleados:
+            print("\nNo hay empleados registrados en el sistema.")
+            return
+
+        print("\n" + "="*85)
+        print(f"{'DNI':<10} | {'Nombre':<20} | {'AFP (10%)':<10} | {'EsSalud (8%)':<12} | {'Imp. Renta':<10} | {'Neto':<10}")
+        print("="*85)
+        for emp in self._empleados:
+            print(f"{emp.dni:<10} | {emp.nombre:<20} | S/{emp.calcular_afp():<8.2f} | "
+                  f"S/{emp.calcular_essalud():<10.2f} | S/{emp.calcular_impuesto_renta():<8.2f} | "
+                  f"S/{emp.calcular_sueldo_neto():<8.2f}")
+        print("="*85)
+
