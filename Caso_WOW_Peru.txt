@@ -1,0 +1,5 @@
+Generalidades de la empresa: WOW PERÚ es una empresa del sector telecomunicaciones enfocada en brindar internet de fibra óptica. Su giro de negocio requiere una gestión masiva de datos. Su organigrama incluye la gerencia general (a cargo de la familia Cordova), el área de sistemas y bases de datos, recursos humanos y operaciones técnicas.
+
+Descripción del problema: Hemos identificado un problema crítico en la gestión de personas y asignación de incidencias. La falta de un sistema centralizado provoca desorden en el registro de empleados y lentitud para asignar técnicos a las fallas de red. Si no se soluciona, la empresa enfrentará pérdida de clientes y problemas legales por cálculos erróneos en los pagos.
+
+Explicación del proceso actual (AS-IS): Actualmente, el registro de técnicos, clientes y reportes se maneja en múltiples hojas de cálculo aisladas. Los cálculos de sueldos (considerando bonos por incidencias resueltas) se hacen manualmente, lo que genera errores y cuellos de botella.
