@@ -1,5 +1,7 @@
 #Inicio
 from abc import ABC, abstractmethod
+from typing import List, Optional
+
 # -----------------------------------------
 # 1. CLASES DE DOMINIO Y DE NEGOCIO
 # -----------------------------------------
