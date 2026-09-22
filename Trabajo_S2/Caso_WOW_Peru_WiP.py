@@ -189,21 +189,105 @@ class SistemaWOWPeru:
             print(inc)
 
 
+# ------------------------------------------
+# 4. MENÚ INTERACTIVO Y VALIDACIONES
+# ------------------------------------------
 
+def validar_dni(dni: str) -> str:
+    dni = dni.strip()
+    if not dni.isdigit() or len(dni) != 8:
+        raise ValueError("El DNI debe ser numérico y contener exactamente 8 dígitos.")
+    return dni
 
+def menu_principal():
+    sistema = SistemaWOWPeru()
+    
+    # Carga inicial de datos de prueba
+    tec1 = Tecnico("71234567", "Carlos Mendoza", 2500.0, "Fibra Óptica")
+    cli1 = Cliente("10987654", "Ana Torres", "Av. Primavera 123", "100 Mbps Fibra")
+    sistema.registrar_empleado(tec1)
+    sistema.registrar_cliente(cli1)
 
+    while True:
+        print("\n=== SISTEMA DE GESTIÓN OPERATIVA Y RRHH - WOW PERÚ ===")
+        print("1. Registrar Empleado (Técnico / Administrativo) - HU01")
+        print("2. Registrar Cliente")
+        print("3. Registrar Incidencia Técnica")
+        print("4. Buscar Cliente por DNI - HU02")
+        print("5. Asignar Técnico a Incidencia")
+        print("6. Listar Incidencias Pendientes/Atendidas - HU03")
+        print("7. Calcular y Listar Planilla de Sueldos - HU04")
+        print("8. Salir")
 
+        try:
+            opcion = int(input("\nSeleccione una opción: "))
 
+            if opcion == 1:
+                tipo = input("Tipo (1: Técnico, 2: Administrativo): ").strip()
+                dni = validar_dni(input("DNI: "))
+                nombre = input("Nombre completo: ").strip()
+                sueldo = float(input("Sueldo base (S/): "))
 
+                if tipo == "1":
+                    esp = input("Especialidad técnica: ").strip()
+                    sistema.registrar_empleado(Tecnico(dni, nombre, sueldo, esp))
+                elif tipo == "2":
+                    sistema.registrar_empleado(Administrativo(dni, nombre, sueldo))
+                else:
+                    raise ValueError("Tipo de empleado no válido.")
+                print(">> ¡Empleado registrado exitosamente!")
 
+            elif opcion == 2:
+                dni = validar_dni(input("DNI del Cliente: "))
+                nombre = input("Nombre completo: ").strip()
+                dir_cli = input("Dirección de instalación: ").strip()
+                plan = input("Plan contratado: ").strip()
+                sistema.registrar_cliente(Cliente(dni, nombre, dir_cli, plan))
+                print(">> ¡Cliente registrado correctamente!")
 
+            elif opcion == 3:
+                ticket = input("Código de Ticket (ej. TCK-101): ").strip()
+                dni_cli = validar_dni(input("DNI del Cliente: "))
+                desc = input("Descripción de la falla técnica: ").strip()
+                sistema.registrar_incidencia(ticket, dni_cli, desc)
+                print(">> ¡Incidencia registrada!")
 
+            elif opcion == 4:
+                dni_cli = validar_dni(input("Ingrese DNI a buscar: "))
+                cli = sistema.buscar_cliente(dni_cli)
+                if cli:
+                    print(f"\n[ENCONTRADO]: {cli}")
+                else:
+                    print(">> Cliente no registrado.")
 
+            elif opcion == 5:
+                ticket = input("Código de Ticket: ").strip()
+                dni_tec = validar_dni(input("DNI del Técnico a asignar: "))
+                sistema.asignar_tecnico_a_incidencia(ticket, dni_tec)
+                print(">> ¡Técnico asignado e incidencia actualizada!")
 
+            elif opcion == 6:
+                sistema.listar_incidencias()
 
+            elif opcion == 7:
+                sistema.listar_planilla_sueldos()
 
+            elif opcion == 8:
+                print("Saliendo del sistema de WOW PERÚ...")
+                break
 
+            else:
+                print(">> Opción fuera de rango (1-8).")
 
+        except ValueError as ve:
+            print(f"\n[ERROR DE VALIDACIÓN]: {ve}")
+        except Exception as e:
+            print(f"\n[ERROR DEL SISTEMA]: {e}")
+
+if __name__ == "__main__":
+    menu_principal()
+
+# Fin
 
 # Para guardar en git
 git add .
