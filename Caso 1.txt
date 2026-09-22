@@ -1,0 +1,5 @@
+El Hotel Campo y Leña, es un pequeña empresa que ofrece su servicio de hospedaje y restaurante a turistas que visitan Cieneguilla, debido al crecimiento que viene experimentando, la empresa ha formalizado la plantilla de su personal, el cual desde sus inicios estuvieron trabajando de manera informal, sin beneficios de ley.
+
+La empresa lleva un registro de sus trabajadores que trabajan en planilla y a la hora de realizar los pagos a fin de mes de sus trabajadores y realizar los descuentos de afp y seguro y sumar los bonos correspondiente, estos se hacen de manera manual , lo cual lleva demasiado tiempo y suele haber errores en los cálculos de los pagos.
+
+De manera similar sucede con los trabajadores que trabajan por horas, a los cuales antes se les pagaba por las horas trabajadas ese mismo día, ahora se suma las horas trabajas, hasta un máximo de 240 horas, para proceder con su respectivo pago, que se realiza de igual manera que los trabajadores de planilla.
